@@ -8,42 +8,46 @@ app = Flask(__name__)
 port = int(os.environ.get("PORT", 5000))
 
 def process_image(image_path):
-    text_output = []
-    service_options = sdk.VisionServiceOptions(os.environ["VISION_ENDPOINT"], os.environ["VISION_KEY"])
+    try:
+        text_output = []
+        service_options = sdk.VisionServiceOptions(os.environ["VISION_ENDPOINT"], os.environ["VISION_KEY"])
 
-    vision_source = sdk.VisionSource(url="https://learn.microsoft.com/azure/ai-services/computer-vision/media/quickstarts/presentation.png")
+        vision_source = sdk.VisionSource(image_path)
 
-    analysis_options = sdk.ImageAnalysisOptions()
+        analysis_options = sdk.ImageAnalysisOptions()
 
-    analysis_options.features = (
-        sdk.ImageAnalysisFeature.CAPTION |
-        sdk.ImageAnalysisFeature.TEXT
-    )
+        analysis_options.features = (
+            sdk.ImageAnalysisFeature.CAPTION |
+            sdk.ImageAnalysisFeature.TEXT
+        )
 
-    analysis_options.language = "en"
-    analysis_options.gender_neutral_caption = True
+        analysis_options.language = "en"
+        analysis_options.gender_neutral_caption = True
 
-    image_analyzer = sdk.ImageAnalyzer(service_options, vision_source, analysis_options)
+        image_analyzer = sdk.ImageAnalyzer(service_options, vision_source, analysis_options)
 
-    result = image_analyzer.analyze()
+        result = image_analyzer.analyze()
 
-    if result.reason == sdk.ImageAnalysisResultReason.ANALYZED:
-        if result.text is not None:
-            for line in result.text.lines:
-                decoded_line = ""
-                for char in line.content:
-                    if isinstance(char, bytes):
-                        decoded_line += char.decode('utf-8', errors='replace')
-                    else:
-                        decoded_line += char
-                text_output.append(decoded_line)
-            return text_output
-        else:
-            error_details = sdk.ImageAnalysisErrorDetails.from_result(result)
-            print("Analysis failed.")
-            print("Error reason: {}".format(error_details.reason))
-            print("Error code: {}".format(error_details.error_code))
-            print("Error message: {}".format(error_details.message))
+        if result.reason == sdk.ImageAnalysisResultReason.ANALYZED:
+            if result.text is not None:
+                for line in result.text.lines:
+                    decoded_line = ""
+                    for char in line.content:
+                        if isinstance(char, bytes):
+                            decoded_line += char.decode('utf-8', errors='replace')
+                        else:
+                            decoded_line += char
+                    text_output.append(decoded_line)
+                return text_output
+            else:
+                error_details = sdk.ImageAnalysisErrorDetails.from_result(result)
+                print("Analysis failed.")
+                print("Error reason: {}".format(error_details.reason))
+                print("Error code: {}".format(error_details.error_code))
+                print("Error message: {}".format(error_details.message))
+    except Exception as e:
+        print("Error processing image:", str(e))
+        return jsonify({'error': 'Failed to process image'})
 
 @app.route('/', methods=['POST'])
 def upload_image():
