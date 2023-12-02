@@ -9,7 +9,6 @@ port = int(os.environ.get("PORT", 5000))
 
 def process_image(image_path):
     try:
-        text_output = []
         service_options = sdk.VisionServiceOptions(os.environ["VISION_ENDPOINT"], os.environ["VISION_KEY"])
 
         vision_source = sdk.VisionSource(image_path)
@@ -27,24 +26,25 @@ def process_image(image_path):
         image_analyzer = sdk.ImageAnalyzer(service_options, vision_source, analysis_options)
 
         result = image_analyzer.analyze()
-
-        if result.reason == sdk.ImageAnalysisResultReason.ANALYZED:
-            if result.text is not None:
-                for line in result.text.lines:
-                    decoded_line = ""
-                    for char in line.content:
-                        if isinstance(char, bytes):
-                            decoded_line += char.decode('utf-8', errors='replace')
-                        else:
-                            decoded_line += char
-                    text_output.append(decoded_line)
-                return text_output
-            else:
-                error_details = sdk.ImageAnalysisErrorDetails.from_result(result)
-                print("Analysis failed.")
-                print("Error reason: {}".format(error_details.reason))
-                print("Error code: {}".format(error_details.error_code))
-                print("Error message: {}".format(error_details.message))
+        text_output = ['hello','world']
+        return text_output
+        # if result.reason == sdk.ImageAnalysisResultReason.ANALYZED:
+        #     if result.text is not None:
+        #         for line in result.text.lines:
+        #             decoded_line = ""
+        #             for char in line.content:
+        #                 if isinstance(char, bytes):
+        #                     decoded_line += char.decode('utf-8', errors='replace')
+        #                 else:
+        #                     decoded_line += char
+        #             text_output.append(decoded_line)
+        #         return text_output
+        #     else:
+        #         error_details = sdk.ImageAnalysisErrorDetails.from_result(result)
+        #         print("Analysis failed.")
+        #         print("Error reason: {}".format(error_details.reason))
+        #         print("Error code: {}".format(error_details.error_code))
+        #         print("Error message: {}".format(error_details.message))
     except Exception as e:
         print("Error processing image:", str(e))
         return jsonify({'error': 'Failed to process image'})
@@ -68,8 +68,7 @@ def upload_image():
 
                 try:
                     # Process the image using the file path
-                    # output = process_image(temp_file_path)
-                    output = ['hello', 'world']
+                    output = process_image(temp_file_path)
                     return jsonify(output)
                 finally:
                     # Remove the temporary file
@@ -88,8 +87,7 @@ def upload_image():
 
             try:
                 # Process the image using the file path
-                # output = process_image(temp_file_path)
-                output = ['hello', 'world']
+                output = process_image(temp_file_path)
                 return jsonify(output)
             finally:
                 # Remove the temporary file
