@@ -45,7 +45,7 @@ def process_image(image_path):
             print("Error code: {}".format(error_details.error_code))
             print("Error message: {}".format(error_details.message))
 
-@app.route('/upload', methods=['POST'])
+@app.route('/', methods=['POST'])
 def upload_image():
     image_url = request.form.get('url') or request.args.get('url')
     image_file = request.files.get('file')
