@@ -9,12 +9,12 @@ port = int(os.environ.get("PORT", 5000))
 
 def process_image(image_path):
     try:
-        service_options = sdk.VisionServiceOptions(os.environ["VISION_ENDPOINT"], os.environ["VISION_KEY"])
+        service_options = sdk.VisionServiceOptions(os.environ['VISION_ENDPOINT'], os.environ['VISION_KEY'])
         # vision_source = sdk.VisionSource(image_path)
         vision_source = sdk.VisionSource(url="https://learn.microsoft.com/azure/ai-services/computer-vision/media/quickstarts/presentation.png")
-        print(image_path)
-        print("VISION_ENDPOINT:", os.environ.get("VISION_ENDPOINT"))
-        print("VISION_KEY:", os.environ.get("VISION_KEY"))
+        # print(image_path)
+        # print("VISION_ENDPOINT:", os.environ.get("VISION_ENDPOINT"))
+        # print("VISION_KEY:", os.environ.get("VISION_KEY"))
 
         analysis_options = sdk.ImageAnalysisOptions()
 
