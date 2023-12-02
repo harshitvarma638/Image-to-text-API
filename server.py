@@ -6,12 +6,12 @@ import requests
 
 app = Flask(__name__)
 port = int(os.environ.get("PORT", 5000))
+service_options = sdk.VisionServiceOptions(os.environ['VISION_ENDPOINT'], os.environ['VISION_KEY'])
 
 def process_image(image_path):
     try:
-        service_options = sdk.VisionServiceOptions(os.environ['VISION_ENDPOINT'], os.environ['VISION_KEY'])
-        # vision_source = sdk.VisionSource(image_path)
-        vision_source = sdk.VisionSource(url="https://learn.microsoft.com/azure/ai-services/computer-vision/media/quickstarts/presentation.png")
+        vision_source = sdk.VisionSource(image_path)
+        # vision_source = sdk.VisionSource(url="https://learn.microsoft.com/azure/ai-services/computer-vision/media/quickstarts/presentation.png")
         # print(image_path)
         # print("VISION_ENDPOINT:", os.environ.get("VISION_ENDPOINT"))
         # print("VISION_KEY:", os.environ.get("VISION_KEY"))
@@ -29,9 +29,9 @@ def process_image(image_path):
         image_analyzer = sdk.ImageAnalyzer(service_options, vision_source, analysis_options)
 
         result = image_analyzer.analyze()
-        text_output = ['hello','world']
+        text_output = []
         if result.reason == sdk.ImageAnalysisResultReason.ANALYZED:
-            print("Image analyzed.")
+            # print("Image analyzed.")
             if result.text is not None:
                 for line in result.text.lines:
                     text_output.append(line.content)
