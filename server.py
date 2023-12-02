@@ -12,6 +12,9 @@ def process_image(image_path):
         service_options = sdk.VisionServiceOptions(os.environ["VISION_ENDPOINT"], os.environ["VISION_KEY"])
         # vision_source = sdk.VisionSource(image_path)
         vision_source = sdk.VisionSource(url="https://learn.microsoft.com/azure/ai-services/computer-vision/media/quickstarts/presentation.png")
+        print(image_path)
+        print("VISION_ENDPOINT:", os.environ.get("VISION_ENDPOINT"))
+        print("VISION_KEY:", os.environ.get("VISION_KEY"))
 
         analysis_options = sdk.ImageAnalysisOptions()
 
@@ -30,13 +33,7 @@ def process_image(image_path):
         if result.reason == sdk.ImageAnalysisResultReason.ANALYZED:
             if result.text is not None:
                 for line in result.text.lines:
-                    decoded_line = ""
-                    for char in line.content:
-                        if isinstance(char, bytes):
-                            decoded_line += char.decode('utf-8', errors='replace')
-                        else:
-                            decoded_line += char
-                    text_output.append(decoded_line)
+                    text_output.append(line.content)
             else:
                 error_details = sdk.ImageAnalysisErrorDetails.from_result(result)
                 print("Analysis failed.")
