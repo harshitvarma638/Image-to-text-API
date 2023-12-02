@@ -47,32 +47,32 @@ def process_image(image_path):
 
 @app.route('/upload', methods=['POST'])
 def upload_image():
-    # image_url = request.form.get('url') or request.args.get('url')
+    image_url = request.form.get('url') or request.args.get('url')
     image_file = request.files.get('file')
 
-    # if image_url:
-    #     try:
-    #         # Download the image from the URL
-    #         response = requests.get(image_url)
-    #         if response.status_code == 200:
-    #             image_data = response.content
+    if image_url:
+        try:
+            # Download the image from the URL
+            response = requests.get(image_url)
+            if response.status_code == 200:
+                image_data = response.content
 
-    #             # Save the byte data to a temporary file
-    #             with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-    #                 temp_file.write(image_data)
-    #                 temp_file_path = temp_file.name
+                # Save the byte data to a temporary file
+                with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+                    temp_file.write(image_data)
+                    temp_file_path = temp_file.name
 
-    #             try:
-    #                 # Process the image using the file path
-    #                 output = process_image(temp_file_path)
-    #                 return jsonify(output)
-    #             finally:
-    #                 # Remove the temporary file
-    #                 os.remove(temp_file_path)
-    #         else:
-    #             return jsonify({'error': 'Failed to download image from URL'})
-    #     except Exception as e:
-    #         return jsonify({'error': str(e)})
+                try:
+                    # Process the image using the file path
+                    output = process_image(temp_file_path)
+                    return jsonify(output)
+                finally:
+                    # Remove the temporary file
+                    os.remove(temp_file_path)
+            else:
+                return jsonify({'error': 'Failed to download image from URL'})
+        except Exception as e:
+            return jsonify({'error': str(e)})
 
     if image_file:
         try:
