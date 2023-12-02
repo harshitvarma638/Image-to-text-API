@@ -31,6 +31,7 @@ def process_image(image_path):
         result = image_analyzer.analyze()
         text_output = ['hello','world']
         if result.reason == sdk.ImageAnalysisResultReason.ANALYZED:
+            print("Image analyzed.")
             if result.text is not None:
                 for line in result.text.lines:
                     text_output.append(line.content)
