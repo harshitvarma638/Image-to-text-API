@@ -74,7 +74,7 @@ def upload_image():
         except Exception as e:
             return jsonify({'error': str(e)})
 
-    if image_file:
+    elif image_file:
         try:
             # Save the uploaded file to a temporary file
             with tempfile.NamedTemporaryFile(delete=False) as temp_file:
