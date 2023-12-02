@@ -34,6 +34,7 @@ def process_image(image_path):
             if result.text is not None:
                 for line in result.text.lines:
                     text_output.append(line.content)
+                    print(line.content)
             else:
                 error_details = sdk.ImageAnalysisErrorDetails.from_result(result)
                 print("Analysis failed.")
