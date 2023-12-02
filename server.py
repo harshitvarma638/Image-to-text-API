@@ -10,7 +10,7 @@ port = int(os.environ.get("PORT", 5000))
 def process_image(image_path):
     try:
         service_options = sdk.VisionServiceOptions(os.environ["VISION_ENDPOINT"], os.environ["VISION_KEY"])
-
+        # vision_source = sdk.VisionSource(image_path)
         vision_source = sdk.VisionSource(url="https://learn.microsoft.com/azure/ai-services/computer-vision/media/quickstarts/presentation.png")
 
         analysis_options = sdk.ImageAnalysisOptions()
@@ -37,13 +37,13 @@ def process_image(image_path):
                         else:
                             decoded_line += char
                     text_output.append(decoded_line)
-                return text_output
             else:
                 error_details = sdk.ImageAnalysisErrorDetails.from_result(result)
                 print("Analysis failed.")
                 print("Error reason: {}".format(error_details.reason))
                 print("Error code: {}".format(error_details.error_code))
                 print("Error message: {}".format(error_details.message))
+        return text_output
     except Exception as e:
         print("Error processing image:", str(e))
         return jsonify({'error': 'Failed to process image'})
