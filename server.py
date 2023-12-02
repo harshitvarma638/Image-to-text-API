@@ -9,10 +9,10 @@ port = int(os.environ.get("PORT", 5000))
 
 def process_image(image_path):
     try:
-        text_output = ['hello']
+        text_output = []
         service_options = sdk.VisionServiceOptions(os.environ["VISION_ENDPOINT"], os.environ["VISION_KEY"])
 
-        vision_source = sdk.VisionSource(url="https://learn.microsoft.com/azure/ai-services/computer-vision/media/quickstarts/presentation.png")
+        vision_source = sdk.VisionSource(image_path)
 
         analysis_options = sdk.ImageAnalysisOptions()
 
@@ -68,7 +68,8 @@ def upload_image():
 
                 try:
                     # Process the image using the file path
-                    output = process_image(temp_file_path)
+                    # output = process_image(temp_file_path)
+                    output = ['hello', 'world']
                     return jsonify(output)
                 finally:
                     # Remove the temporary file
@@ -87,7 +88,8 @@ def upload_image():
 
             try:
                 # Process the image using the file path
-                output = process_image(temp_file_path)
+                # output = process_image(temp_file_path)
+                output = ['hello', 'world']
                 return jsonify(output)
             finally:
                 # Remove the temporary file
