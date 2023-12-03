@@ -5,6 +5,11 @@ python server.py
 
 API Endpoint:
 
+https://image-to-text-api.onrender.com
+
+how to call:
+
+make a POST request to '/' route with parameter 'file' or 'url'.If you are selecting an image from localstorage then use 'file' as key and image as value in form-data in postman.If you are using url them use 'url' parameter and give url in params in postman.
 
 Resources used:
 
