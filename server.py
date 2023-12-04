@@ -13,8 +13,8 @@ def process_image(image_path):
         vision_source = sdk.VisionSource(image_path)
         # vision_source = sdk.VisionSource(url="https://learn.microsoft.com/azure/ai-services/computer-vision/media/quickstarts/presentation.png")
         # print(image_path)
-        print("VISION_ENDPOINT:", os.environ.get("VISION_ENDPOINT"))
-        print("VISION_KEY:", os.environ.get("VISION_KEY"))
+        # print("VISION_ENDPOINT:", os.environ.get("VISION_ENDPOINT"))
+        # print("VISION_KEY:", os.environ.get("VISION_KEY"))
 
         analysis_options = sdk.ImageAnalysisOptions()
 
